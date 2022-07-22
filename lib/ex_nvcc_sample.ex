@@ -1,6 +1,6 @@
 defmodule ExNvccSample do
   @moduledoc """
-  Documentation for `ExNvccSample`.
+  A sample program that connects Elixir and `nvcc`.
   """
 
   @doc """

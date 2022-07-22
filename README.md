@@ -1,6 +1,6 @@
 # ExNvccSample
 
-**TODO: Add description**
+A sample program that connects Elixir and `nvcc`. 
 
 ## Installation
 
