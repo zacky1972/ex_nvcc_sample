@@ -67,7 +67,11 @@ defmodule ExNvccSample do
   end
 
   defp add_sub_sub(size, shape, binary1, binary2, {:s, 32}) do
-    add_s32_nif(size, shape, binary1, binary2)
+    try do
+      add_s32_nif(size, shape, binary1, binary2)
+    rescue
+      _e in ErlangError -> raise RuntimeError, message: "CUDA error"
+    end
   end
 
   @doc false
