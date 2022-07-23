@@ -70,7 +70,7 @@ defmodule ExNvccSample do
     try do
       add_s32_nif(size, shape, binary1, binary2)
     rescue
-      _e in ErlangError -> raise RuntimeError, message: "CUDA error"
+      e in ErlangError -> raise RuntimeError, message: Atom.to_string(e.original)
     end
   end
 
