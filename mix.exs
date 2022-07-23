@@ -50,7 +50,7 @@ defmodule ExNvccSample.MixProject do
         "Makefile",
         "c_src/*.c",
         "c_src/*.h",
-        "c_src/*.cc"
+        "c_src/*.cu"
       ]
     ]
   end
