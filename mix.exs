@@ -46,7 +46,10 @@ defmodule ExNvccSample.MixProject do
         "LICENSE",
         "mix.exs",
         "README.md",
-        "Makefile"
+        "Makefile",
+        "c_src/*.c",
+        "c_src/*.h",
+        "c_src/*.cc"
       ]
     ]
   end
