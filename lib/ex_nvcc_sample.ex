@@ -7,6 +7,7 @@ defmodule ExNvccSample do
 
   @on_load :load_nif
 
+  @doc false
   def load_nif do
     nif_file = '#{Application.app_dir(:ex_nvcc_sample, "priv/libnif")}'
 
@@ -17,16 +18,36 @@ defmodule ExNvccSample do
     end
   end
 
+  @doc """
+  Add two tensors with signed 32bit integer.
+  ## Examples
+
+      iex> ExNvccSample.add_s32(0, 1)
+      #Nx.Tensor<
+        s32[1]
+        [1]
+      >
+
+      iex> ExNvccSample.add_s32(Nx.tensor([0, 1, 2, 3]), Nx.tensor([3, 2, 1, 0]))
+      #Nx.Tensor<
+        s32[4]
+        [3, 3, 3, 3]
+      >
+
+  """
   def add_s32(x, y), do: add(x, y, {:s, 32})
 
+  @doc false
   def add(x, y, type) when is_struct(x, Nx.Tensor) and is_struct(y, Nx.Tensor) do
     add_sub(Nx.as_type(x, type), Nx.as_type(y, type), type)
   end
 
+  @doc false
   def add(x, y, type) when is_number(x) do
     add(Nx.tensor([x]), y, type)
   end
 
+  @doc false
   def add(x, y, type) when is_number(y) do
     add(x, Nx.tensor([y]), type)
   end
@@ -49,18 +70,6 @@ defmodule ExNvccSample do
     add_s32_nif(size, shape, binary1, binary2)
   end
 
+  @doc false
   def add_s32_nif(_size, _shape, _binary1, _binary2), do: exit(:nif_not_loaded)
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> ExNvccSample.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
