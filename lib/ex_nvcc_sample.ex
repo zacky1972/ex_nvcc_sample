@@ -64,7 +64,7 @@ defmodule ExNvccSample do
     try do
       add_s32_nif(size, shape, binary1, binary2)
     rescue
-      e in ErlangError -> raise RuntimeError, message: Atom.to_string(e.original)
+      e in ErlangError -> raise RuntimeError, message: List.to_string(e.original)
     end
   end
 
