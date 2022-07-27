@@ -1,5 +1,7 @@
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
+#include <stdio.h>
 #include <erl_nif.h>
 
 #ifdef CUDA
@@ -38,8 +40,14 @@ static ERL_NIF_TERM add_s32_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM arg
     int32_t *out = (int32_t *)out_data.data;
 
 #ifdef CUDA
-    if(__builtin_expect(!add_s32_cuda(in1, in2, out, vec_size), false)) {
-        return enif_raise_exception(env, enif_make_atom(env, "CUDA Error"));
+    const char *cuda_error = "CUDA Error: ";
+    char error[MAXBUFLEN - strlen(cuda_error)];
+    memset(error, 0, MAXBUFLEN - strlen(cuda_error));
+
+    if(__builtin_expect(!add_s32_cuda(in1, in2, out, vec_size, error), false)) {
+        char ret_error[MAXBUFLEN];
+        snprintf(ret_error, MAXBUFLEN, "%s%s", cuda_error, error);
+        return enif_raise_exception(env, enif_make_string(env, ret_error, ERL_NIF_LATIN1));
     }
 #else
     for(ErlNifUInt64 i = 0; i < vec_size; i++) {

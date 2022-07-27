@@ -54,13 +54,7 @@ defmodule ExNvccSample do
 
   defp add_sub(x, y, type) do
     if Nx.shape(x) == Nx.shape(y) do
-      %{
-        x
-        | data: %{
-          x.data
-          | state: add_sub_sub(Nx.size(x), Nx.shape(x), x.data.state, y.data.state, type)
-        }
-      }
+      Nx.from_binary(add_sub_sub(Nx.size(x), Nx.shape(x), Nx.to_binary(x), Nx.to_binary(y), type), type)
     else
       raise RuntimeError, "shape is not much add(#{inspect Nx.shape(x)}, #{inspect Nx.shape(y)})"
     end
@@ -70,7 +64,7 @@ defmodule ExNvccSample do
     try do
       add_s32_nif(size, shape, binary1, binary2)
     rescue
-      e in ErlangError -> raise RuntimeError, message: Atom.to_string(e.original)
+      e in ErlangError -> raise RuntimeError, message: List.to_string(e.original)
     end
   end
 
