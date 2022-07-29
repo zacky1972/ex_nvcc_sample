@@ -45,8 +45,10 @@ static ERL_NIF_TERM add_s32_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM arg
     memset(error, 0, MAXBUFLEN);
 
     if(__builtin_expect(!add_s32_cuda(in1, in2, out, vec_size, error), false)) {
-        char ret_error[MAXBUFLEN + strlen(cuda_error)];
-        snprintf(ret_error, MAXBUFLEN + strlen(cuda_error), "%s%s", cuda_error, error);
+        size_t len = MAXBUFLEN + strlen(cuda_error);
+        char ret_error[len];
+        memset(ret_error, 0, len);
+        snprintf(ret_error, len, "%s%s", cuda_error, error);
         return enif_raise_exception(env, enif_make_string(env, ret_error, ERL_NIF_LATIN1));
     }
 #else
