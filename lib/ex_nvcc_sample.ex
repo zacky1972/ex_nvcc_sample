@@ -69,5 +69,5 @@ defmodule ExNvccSample do
   end
 
   @doc false
-  def add_s32_nif(_size, _shape, _binary1, _binary2), do: exit(:nif_not_loaded)
+  def add_s32_nif(_size, _shape, _binary1, _binary2), do: :erlang.nif_error(:not_loaded)
 end
