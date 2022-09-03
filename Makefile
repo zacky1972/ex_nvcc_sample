@@ -8,10 +8,13 @@ ifeq ($(shell uname -s),Linux)
 ifeq ($(NVCC),)
 NVCC = $(shell which nvcc)
 ifeq ($(NVCC),)
+ifeq ($(CUDA),true)
 $(error Could not find nvcc. set path to nvcc)
 endif
 endif
+endif
 ifneq ($(NVCC),)
+CUDA = true
 CUDA_PATH = $(shell elixir --eval "\"$(NVCC)\" |> Path.split() |> Enum.drop(-2) |> Path.join() |> IO.puts")
 CFLAGS += -DCUDA
 CUFLAGS += -DCUDA -I$(CUDA_PATH)/include --compiler-options -fPIC
