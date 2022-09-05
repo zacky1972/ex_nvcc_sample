@@ -8,10 +8,13 @@ ifeq ($(shell uname -s),Linux)
 ifeq ($(NVCC),)
 NVCC = $(shell which nvcc)
 ifeq ($(NVCC),)
+ifeq ($(CUDA),true)
 $(error Could not find nvcc. set path to nvcc)
 endif
 endif
+endif
 ifneq ($(NVCC),)
+CUDA = true
 CUDA_PATH = $(shell elixir --eval "\"$(NVCC)\" |> Path.split() |> Enum.drop(-2) |> Path.join() |> IO.puts")
 CFLAGS += -DCUDA
 CUFLAGS += -DCUDA -I$(CUDA_PATH)/include --compiler-options -fPIC
@@ -37,7 +40,7 @@ ifeq ($(ERLANG_PATH),)
 $(error Could not find the Elixir installation. Check to see that 'elixir')
 endif
 ERL_EI_INCLUDE_DIR = $(ERLANG_PATH)/usr/include
-ERL_EI_LIB_DIR = $(ERLANG_PATH)/usr/lib
+ERL_EI_LIBDIR = $(ERLANG_PATH)/usr/lib
 endif
 
 ERL_CFLAGS ?= -I$(ERL_EI_INCLUDE_DIR)
